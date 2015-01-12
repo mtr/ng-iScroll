@@ -17,7 +17,7 @@ Dependencies
 
 Special Notes
 ------------
-This is a temp release to make ng-iScroll compatible with iScoll 5.0 Beta
+This is an ng-iScroll release compatible with iScroll 5.x.
 
 
 Reporting Issues
