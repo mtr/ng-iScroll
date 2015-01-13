@@ -88,7 +88,6 @@ $scope.$parent.myScrollOptions = {
                 if (this.y === 0) {
                     $scope.yStartFromZero = true;
                 }
-
             }},
             { scrollEnd: function () {
                 if ($scope.yStartFromZero && this.directionY === -1) {
