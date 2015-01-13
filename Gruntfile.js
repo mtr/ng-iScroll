@@ -11,8 +11,17 @@ module.exports = function (grunt) {
     // Project configuration.
     grunt.initConfig({
         pkg: pkg,
+
+        clean: ['dist'],
+
+        js: {
+            src: 'src/ng-iscroll.js',
+            dest: 'dist/ng-iscroll.js',
+            minDest: 'dist/ng-iscroll.min.js'
+        },
+
         jshint: {
-            files: ['Gruntfile.js', 'src/ng-iscroll.js']
+            files: ['Gruntfile.js', '<%= js.src %>']
         },
 
         concat: {
@@ -23,8 +32,8 @@ module.exports = function (grunt) {
                 }
             },
             dist: {
-                src: ['src/ng-iscroll.js'],
-                dest: 'dist/ng-iscroll.js'
+                src: ['<%= js.src %>'],
+                dest: '<%= js.dest %>'
             }
         },
 
@@ -40,18 +49,28 @@ module.exports = function (grunt) {
                     compress: true
                 },
                 files: {
-                    'dist/ng-iscroll.min.js': ['src/ng-iscroll.js']
+                    '<%= js.minDest %>': ['<%= js.src %>']
                 }
+            }
+        },
+
+        watch: {
+            js: {
+                files: '<%= js.src %>',
+                tasks: ['clean', 'jshint', 'concat', 'uglify']
             }
         }
 
     });
 
     // load Plugins
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     // Register tasks.
-    grunt.registerTask('default', ['jshint', 'concat', 'uglify']);
+    grunt.registerTask('default', ['clean', 'jshint', 'concat', 'uglify']);
+    grunt.registerTask('development', ['default', 'watch']);
 };
