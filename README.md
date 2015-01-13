@@ -3,6 +3,19 @@ ng-iScroller v1.3
 
 AngularJS Module that enables iScroll 5 to work using a directive.
 
+
+Note
+------------
+
+Since [Brad Vernon](https://github.com/ibspoof), the original author of this 
+package, [on June 12, 2013 wrote](https://github
+.com/ibspoof/ng-iScroll/issues/6#issuecomment-19297756) "Once iScroll 5 is 
+officially released I will make the 1.2b code be the default release", and I 
+couldn't find any significant updates to his repo in accordance with that 
+(now that iScroll 5.1.3 is out), I've created my own fork.  --- Martin 
+Thorsen Ranang.
+
+
 Demos
 ------------
 
