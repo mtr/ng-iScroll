@@ -1,35 +1,57 @@
 /*global module:false*/
-module.exports = function(grunt) {
+module.exports = function (grunt) {
+    var pkg = grunt.file.readJSON('package.json'),
+        bannerFormat = '/**\n' +
+            ' * @license <%= pkg.name %> v<%= pkg.version %>, ' +
+            '<%= grunt.template.today("yyyy-mm-dd HH:MM:ss") %>\n' +
+            ' * (c) 2013 <%= pkg.author.name %> <<%= pkg.author.email %>>\n' +
+            ' * License: <%= pkg.license %>\n' +
+            ' */\n';
 
-	// Project configuration.
-	grunt.initConfig({
-		pkg: '<json:package.json>',
-		meta: {
-			banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' + '<%= grunt.template.today("yyyy-mm-dd") %>\n' + '<%= pkg.homepage ? "* " + pkg.homepage + "\n" : "" %>' + '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' + ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
-		},
-		
-		jshint: {
-			files: ['Gruntfile.js', 'src/ng-iscroll.js']
-		},
+    // Project configuration.
+    grunt.initConfig({
+        pkg: pkg,
+        jshint: {
+            files: ['Gruntfile.js', 'src/ng-iscroll.js']
+        },
+
+        concat: {
+            options: {
+                banner: bannerFormat,
+                stripBanners: {
+                    block: true
+                }
+            },
+            dist: {
+                src: ['src/ng-iscroll.js'],
+                dest: 'dist/ng-iscroll.js'
+            }
+        },
 
         uglify: {
-			options: {
-				mangle: false,
-                preserveComments: 'some'
-			},
+            options: {
+                banner: bannerFormat,
+                preserveComments: false,
+                report: 'min'
+            },
             target: {
+                options: {
+                    mangle: true,
+                    compress: true
+                },
                 files: {
-                    'src/ng-iscroll.min.js': ['src/ng-iscroll.js']
+                    'dist/ng-iscroll.min.js': ['src/ng-iscroll.js']
                 }
             }
-		}
-	
-	});
+        }
+
+    });
 
     // load Plugins
+    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
 
-	// Register tasks.
-	grunt.registerTask('default', ['jshint','uglify']);
+    // Register tasks.
+    grunt.registerTask('default', ['jshint', 'concat', 'uglify']);
 };
