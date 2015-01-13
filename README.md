@@ -15,6 +15,26 @@ couldn't find any significant updates to his repo in accordance with that
 Thorsen Ranang.
 
 
+Install
+------------
+
+Since I haven't published this package to npmjs.com (yet), it can (for now) 
+be installed from GitHub with the command
+
+```bash
+npm install --save mtr/ng-iScroll
+```
+
+For doing development on the package, please run
+
+```bash
+npm install
+npm grunt
+```
+
+inside the ng-iScroll directory.
+
+
 Demos
 ------------
 
