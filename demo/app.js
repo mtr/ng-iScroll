@@ -7,9 +7,11 @@ App.controller('Controller', function ($scope)
     $scope.$parent.myScrollOptions = {
         snap: false,
         on: [
-            { scrollEnd: function (e) {
-                alert('finished scrolling wrapper');
-            }},
+            {
+                scrollEnd: function (e) {
+                    alert('finished scrolling wrapper');
+                }
+            }
         ]
     };
 

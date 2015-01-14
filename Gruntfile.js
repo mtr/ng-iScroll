@@ -12,29 +12,51 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: pkg,
 
-        clean: ['dist'],
-
         js: {
             src: 'src/ng-iscroll.js',
+            annotated: 'src/ng-iscroll.annotated.js',
             dest: 'dist/ng-iscroll.js',
             minDest: 'dist/ng-iscroll.min.js'
         },
 
-        jshint: {
-            files: ['Gruntfile.js', '<%= js.src %>']
+        clean: [
+            'dist',
+            '<%= src.annotated =>'
+        ],
+
+        ngAnnotate: {
+            options: {
+                singleQuotes: true
+            },
+            target: {
+                files: [
+                    {
+                        expand: true,
+                        src: ['<%= js.src %>'],
+                        ext: '.annotated.js',
+                        extDot: 'last'
+                    }
+                ]
+            }
         },
 
         concat: {
             options: {
-                banner: bannerFormat,
+                banner: bannerFormat +
+                ";(function (window, undefined){\n",
+                footer: "}(window));",
                 stripBanners: {
                     block: true
                 }
             },
             dist: {
-                src: ['<%= js.src %>'],
+                src: ['<%= js.annotated %>'],
                 dest: '<%= js.dest %>'
             }
+        },
+
+        jshint: {
+            files: ['Gruntfile.js', '<%= js.dest %>']
         },
 
         uglify: {
@@ -49,7 +71,7 @@ module.exports = function (grunt) {
                     compress: true
                 },
                 files: {
-                    '<%= js.minDest %>': ['<%= js.src %>']
+                    '<%= js.minDest %>': ['<%= js.dest %>']
                 }
             }
         },
@@ -57,7 +79,13 @@ module.exports = function (grunt) {
         watch: {
             js: {
                 files: '<%= js.src %>',
-                tasks: ['clean', 'jshint', 'concat', 'uglify']
+                tasks: [
+                    'clean',
+                    'ngAnnotate',
+                    'concat',
+                    'jshint',
+                    'uglify'
+                ]
             }
         }
 
@@ -69,8 +97,15 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-ng-annotate');
 
     // Register tasks.
-    grunt.registerTask('default', ['clean', 'jshint', 'concat', 'uglify']);
+    grunt.registerTask('default', [
+        'clean',
+        'ngAnnotate',
+        'concat',
+        'jshint',
+        'uglify'
+    ]);
     grunt.registerTask('development', ['default', 'watch']);
 };
